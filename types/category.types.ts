@@ -1,0 +1,25 @@
+// src/types/category.types.ts
+
+/**
+ * شكل الصورة الراجع من ImageSchema
+ * (نفسه مستخدم في Banner? لأ — البانر image بتاعته string)
+ */
+export interface ImageAsset {
+    public_id: string;
+    secure_url: string;
+  }
+  
+  export interface Category {
+    _id: string;
+    name: string;
+    slug: string;
+    image: ImageAsset;
+    isDeleted: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+  
+  export interface CategoryFormData {
+    name: string;
+    image?: File;   // مطلوب في create، اختياري في update
+  }

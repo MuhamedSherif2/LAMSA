@@ -1,0 +1,189 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   LAMSA STORE — Design Tokens
+   Light + Dark palettes
+   ============================================================ */
+
+:root {
+  /* Base */
+  --background: #FAFAF8;
+  --foreground: #171717;
+
+  /* Surfaces */
+  --card: #FFFFFF;
+  --card-foreground: #171717;
+  --popover: #FFFFFF;
+  --popover-foreground: #171717;
+
+  /* Primary (buttons, headings) */
+  --primary: #171717;
+  --primary-foreground: #FAFAF8;
+
+  /* Secondary (subtle backgrounds) */
+  --secondary: #F2EFE9;
+  --secondary-foreground: #171717;
+
+  /* Muted (disabled, hints) */
+  --muted: #F2EFE9;
+  --muted-foreground: #6B6B6B;
+
+  /* Accent (golden brand color) */
+  --accent: #B08D57;
+  --accent-foreground: #FFFFFF;
+
+  /* Destructive (errors, delete) */
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  /* Borders & inputs */
+  --border: #E5E2DC;
+  --input: #E5E2DC;
+  --ring: #B08D57;
+
+  /* Charts (اختياري) */
+  --chart-1: #B08D57;
+  --chart-2: #171717;
+  --chart-3: #6B6B6B;
+  --chart-4: #C9A96E;
+  --chart-5: #8B6F47;
+
+  /* Radius */
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: #FAFAF8;
+  --sidebar-foreground: #171717;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #FAFAF8;
+  --sidebar-accent: #F2EFE9;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #E5E2DC;
+  --sidebar-ring: #B08D57;
+}
+
+.dark {
+  --background: #0D0D0D;
+  --foreground: #F5F5F5;
+
+  --card: #151515;
+  --card-foreground: #F5F5F5;
+  --popover: #151515;
+  --popover-foreground: #F5F5F5;
+
+  --primary: #F5F1E8;
+  --primary-foreground: #0D0D0D;
+
+  --secondary: #1A1A1A;
+  --secondary-foreground: #F5F5F5;
+
+  --muted: #1A1A1A;
+  --muted-foreground: #A6A6A6;
+
+  --accent: #C9A96E;
+  --accent-foreground: #0D0D0D;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #292929;
+  --input: #292929;
+  --ring: #C9A96E;
+
+  --chart-1: #C9A96E;
+  --chart-2: #F5F5F5;
+  --chart-3: #A6A6A6;
+  --chart-4: #B08D57;
+  --chart-5: #D4B988;
+
+  --sidebar: #0D0D0D;
+  --sidebar-foreground: #F5F5F5;
+  --sidebar-primary: #F5F1E8;
+  --sidebar-primary-foreground: #0D0D0D;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #F5F5F5;
+  --sidebar-border: #292929;
+  --sidebar-ring: #C9A96E;
+}
+
+/* ============================================================
+   Tailwind v4 Theme Mapping
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
