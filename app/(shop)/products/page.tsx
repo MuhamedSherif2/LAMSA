@@ -1,13 +1,10 @@
-import ProductsForm from "@/features/products/_components/ProductsForm";
-
-
 interface IProps{
 
 }
 
 function page({} : IProps){
     return(
-        <ProductsForm />
+        <h1>hello shop</h1>
     )
 }
 export default page;
