@@ -9,12 +9,12 @@ import type {
 
 export const subCategoryService = {
   getAllSubCategories: async (): Promise<ApiResponseWithCount<SubCategory[]>> => {
-    const res = await api.get<ApiResponseWithCount<SubCategory[]>>('subcategories');
+    const res = await api.get<ApiResponseWithCount<SubCategory[]>>('sub-categories');
     return res.data;
   },
 
   getSubCategoryById: async (id: string): Promise<ApiResponse<SubCategory>> => {
-    const res = await api.get<ApiResponse<SubCategory>>(`subcategories/${id}`);
+    const res = await api.get<ApiResponse<SubCategory>>(`sub-categories/${id}`);
     return res.data;
   },
 
@@ -22,7 +22,7 @@ export const subCategoryService = {
     categoryId: string,
   ): Promise<ApiResponseWithCount<SubCategory[]>> => {
     const res = await api.get<ApiResponseWithCount<SubCategory[]>>(
-      `subcategories/category/${categoryId}`,
+      `sub-categories/category/${categoryId}`,
     );
     return res.data;
   },
@@ -30,7 +30,7 @@ export const subCategoryService = {
   createSubCategory: async (
     data: CreateSubCategoryPayload,
   ): Promise<ApiResponse<SubCategory>> => {
-    const res = await api.post<ApiResponse<SubCategory>>('subcategories', data);
+    const res = await api.post<ApiResponse<SubCategory>>('sub-categories', data);
     return res.data;
   },
 
@@ -38,12 +38,12 @@ export const subCategoryService = {
     id: string,
     data: UpdateSubCategoryPayload,
   ): Promise<ApiResponse<SubCategory>> => {
-    const res = await api.put<ApiResponse<SubCategory>>(`subcategories/${id}`, data);
+    const res = await api.put<ApiResponse<SubCategory>>(`sub-categories/${id}`, data);
     return res.data;
   },
 
   deleteSubCategory: async (id: string): Promise<ApiResponse> => {
-    const res = await api.delete<ApiResponse>(`subcategories/${id}`);
+    const res = await api.delete<ApiResponse>(`sub-categories/${id}`);
     return res.data;
   },
 };

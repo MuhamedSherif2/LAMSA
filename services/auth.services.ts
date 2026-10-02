@@ -1,4 +1,3 @@
-// src/services/auth.service.ts
 import api from './api';
 import type { ApiResponse } from '../types/api.types';
 import type {

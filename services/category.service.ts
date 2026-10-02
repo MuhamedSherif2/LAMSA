@@ -17,11 +17,14 @@ export const categoryService = {
   createCategory: async (data: CategoryFormData): Promise<ApiResponse<Category>> => {
     const form = new FormData();
     form.append('name', data.name);
-    if (data.image) form.append('image', data.image);
+    if (data.image?.[0]) {
+      form.append("image", data.image[0]);
+    }
 
-    const res = await api.post<ApiResponse<Category>>('categories', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const res = await api.post<ApiResponse<Category>>(
+      "categories",
+      form
+    );
     return res.data;
   },
 
@@ -31,7 +34,9 @@ export const categoryService = {
   ): Promise<ApiResponse<Category>> => {
     const form = new FormData();
     form.append('name', data.name);
-    if (data.image) form.append('image', data.image);
+    if (data.image?.[0]) {
+      form.append("image", data.image[0]);
+    }
 
     const res = await api.put<ApiResponse<Category>>(`categories/${id}`, form, {
       headers: { 'Content-Type': 'multipart/form-data' },

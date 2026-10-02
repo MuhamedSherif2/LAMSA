@@ -25,6 +25,7 @@ export const productService = {
     form.append('name', data.name);
     form.append('description', data.description);
     form.append('price', String(data.price));
+    form.append('stock', String(data.stock));
     if (data.discountPrice !== undefined) {
       form.append('discountPrice', String(data.discountPrice));
     }
@@ -50,8 +51,7 @@ export const productService = {
     if (data.name !== undefined) form.append('name', data.name);
     if (data.description !== undefined) form.append('description', data.description);
     if (data.price !== undefined) form.append('price', String(data.price));
-    if (data.discountPrice !== undefined)
-      form.append('discountPrice', String(data.discountPrice));
+    if (data.discountPrice !== undefined) form.append('discountPrice', String(data.discountPrice));
     if (data.category !== undefined) form.append('category', data.category);
     if (data.subCategory !== undefined) form.append('subCategory', data.subCategory);
     if (data.isFeatured !== undefined) form.append('isFeatured', String(data.isFeatured));

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { authService } from "@/services/auth.services";
 import type { Login } from "@/types/auth.types";
 import InputsFeild from "../register/Input";
+import { cookieHelper, TOKEN_KEY } from '@/lib/cookies';
 
 function LogInForm() {
   const router = useRouter();
@@ -25,23 +26,28 @@ function LogInForm() {
     const data: Login = { email, password };
 
     setLoading(true);
-
+    
     try {
       const res = await authService.login(data);
       console.log("✅ Login:", res.data);
+    
+      const token = res.data?.token;
+      const user = res.data?.user;
+    
 
-      const token = res.data?.data?.token;
-      const user = res.data?.data?.user;
-
-      if (token) localStorage.setItem("lamsa_token", token);
-      if (user) localStorage.setItem("lamsa_user", JSON.stringify(user));
-
-      toast.success("تم الدخول بنجاح");
-
-      setTimeout(() => router.push("/"), 700);
+        if(user && token) {
+           cookieHelper.set(TOKEN_KEY, token);
+           router.refresh()
+           toast.success("Login successful");
+        }
+      // if (user) localStorage.setItem("lamsa_user", JSON.stringify(user));
+    
+    
+      // const redirectTo = user?.role === "admin" ? "/dashboard" : "/";\
+      // setTimeout(() => router.push(redirectTo), 700);
     } catch (err: any) {
       const message =
-        err?.response?.data?.message || "إيميل أو باسورد غلط";
+        err?.response?.data?.message || "Invalid email or password";
       toast.error(message);
       console.error("❌ Login error:", err?.response?.data);
     } finally {

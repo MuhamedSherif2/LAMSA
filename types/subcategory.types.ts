@@ -1,12 +1,11 @@
 // src/types/subcategory.types.ts
-
-import type { PopulatedRef } from './product.types';
+import {Category} from './category.types'
 
 export interface SubCategory {
   _id: string;
   name: string;
   slug: string;
-  category: PopulatedRef | string;
+  category: Category | string;
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
@@ -14,10 +13,9 @@ export interface SubCategory {
 
 export interface CreateSubCategoryPayload {
   name: string;
-  category: string;   // ObjectId
+  category: string;
 }
 
-/** update محتاج name + category مع بعض (حسب الباك) */
 export interface UpdateSubCategoryPayload {
   name: string;
   category: string;

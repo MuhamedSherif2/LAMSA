@@ -1,60 +1,40 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
+
+
+export default function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  const token = request.cookies.get("template_token")?.value;
-
-  const protectedRoutes = [
-    "/profile",
-    "/checkout",
-    "/cart",
-    "/wishlist",
-    "/allorders",
-  ];
-
-  const authRoutes = [
-    "/login",
-    "/register",
-    "/forget-password",
-  ];
-
+  const token = request.cookies.get("lamsa_token")?.value;
   const isAuthenticated = Boolean(token);
 
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  const isAuthRoute = /dashboard/i.test(pathname);
+  const isGuestRoute = /login|register/i.test(pathname);
 
-  const isAuthRoute = authRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
+  // --- Unauthenticated user on protected page ---
+  if (!isAuthenticated && isAuthRoute) {
+    const url = new URL("/login", request.url);
+    const res = NextResponse.redirect(url);
 
-  // Guest trying to access protected route
-  if (!isAuthenticated && isProtectedRoute) {
-    return NextResponse.redirect(
-      new URL("/login", request.url)
-    );
+    return res;
   }
 
-  // Authenticated user trying to access auth pages
-  if (isAuthenticated && isAuthRoute) {
-    return NextResponse.redirect(
-      new URL("/", request.url)
-    );
+  // --- Authenticated user on login/register ---
+  if (isAuthenticated && isGuestRoute) {
+    const url = new URL("/dashboard", request.url);
+    const res = NextResponse.redirect(url);
+
+    return res;
   }
 
-  return NextResponse.next();
+  // Always return a response containing cookies
+  const res = NextResponse.next();
+  return res
 }
 
 export const config = {
   matcher: [
-    "/profile/:path*",
-    "/checkout/:path*",
-    "/cart",
-    "/wishlist",
-    "/allorders/:path*",
-    "/login",
-    "/register",
-    "/forget-password/:path*",
+    "/((?!api|trpc|_next|_vercel|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|mjs|json|xml|txt|webmanifest|woff2?|ttf|map)$).*)",
   ],
 };
