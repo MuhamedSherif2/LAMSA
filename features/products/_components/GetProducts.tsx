@@ -1,52 +1,71 @@
 "use client";
 
-import { useState } from "react";
-
+import { useRef, useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import ProductsForm from "./ProductsForm";
-import ProductTable from "./ProductTable";
-
+import ProductTable, { type ProductTableRef } from "./ProductTable";
 import type { Product } from "@/types/product.types";
 
 function GetProducts() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<Product | null>(null);
 
-  // Add
+  const tableRef = useRef<ProductTableRef>(null);
+
+  /* ---------- Handlers ---------- */
   const handleAdd = () => {
-    setSelectedProduct(null);
-    setIsFormOpen(true);
+    setSelected(null);
+    setIsOpen(true);
   };
 
-  // Edit
   const handleEdit = (product: Product) => {
-    setSelectedProduct(product);
-    setIsFormOpen(true);
+    setSelected(product);
+    setIsOpen(true);
   };
 
-  // Close
   const handleClose = () => {
-    setIsFormOpen(false);
-    setSelectedProduct(null);
+    setIsOpen(false);
+    setSelected(null);
   };
 
-  // After successful add/update
   const handleSuccess = () => {
-    handleClose();
+    tableRef.current?.refresh();
   };
 
   return (
-    <section>
-      <ProductsForm
-        initialData={selectedProduct ?? undefined}
-        isOpen={isFormOpen}
+    <section className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Products</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage your store products
+          </p>
+        </div>
+
+        <Button type="button" onClick={handleAdd} className="gap-2">
+          <Plus className="w-4 h-4" />
+          Add Product
+        </Button>
+      </div>
+
+      {/* Table */}
+      {/* <ProductTable  /> */}
+      <ProductTable ref={tableRef} onEdit={handleEdit} />
+
+      {/* Modal Form */}
+      {/* <ProductsForm
+        isOpen={isOpen}
+        initialData={selected}
         onClose={handleClose}
         onSuccess={handleSuccess}
-      />
+      /> */}
 
-      <ProductTable
-        onAdd={handleAdd}
-        onEdit={handleEdit}
-      />
+      <ProductsForm         isOpen={isOpen}
+        initialData={selected}
+        onClose={handleClose}
+        onSuccess={handleSuccess} />
     </section>
   );
 }
