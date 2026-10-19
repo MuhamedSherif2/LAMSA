@@ -1,9 +1,8 @@
-
-
+import GetBanner from "@/features/super-admin/banner/_components/GetBanners";
 function Page(){
     return(
         <div>
-            <h1>Hello Banners</h1>
+            <GetBanner />
         </div>
     )
 }

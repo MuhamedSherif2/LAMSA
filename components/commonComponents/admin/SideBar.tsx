@@ -15,7 +15,7 @@ import {
     SidebarMenuItem,
     SidebarRail,
 } from '@/components/ui/sidebar';
-import { sideBarDashboardData } from '@/data';
+import { dashboardSideBarData } from '@/data';
 
 function DashboardSidebar() {
     const pathname = usePathname();
@@ -54,7 +54,7 @@ function DashboardSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {sideBarDashboardData.map((item) => {
+                            {dashboardSideBarData.map((item) => {
                                 const Icon = item.icon;
                                 return (
                                     <SidebarMenuItem key={item.id}>

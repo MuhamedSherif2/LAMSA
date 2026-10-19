@@ -1,4 +1,4 @@
-import GetSubCategory from "@/features/sub-category/_components/GetSubCategory";
+import GetSubCategory from "@/features/super-admin/sub-category/_components/GetSubCategory";
 
 
 function Page(){

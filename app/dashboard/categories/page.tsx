@@ -1,4 +1,4 @@
-import GetCategory from "@/features/category/GetCategory";
+import GetCategory from "@/features/super-admin/category/GetCategory";
 
 function page(){
     return(

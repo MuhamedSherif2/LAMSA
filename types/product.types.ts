@@ -17,6 +17,8 @@ export interface Product {
   price: number;
   discountPrice: number;
   stock: number;
+  sizes: string[];
+  colors: string[];
   images: ProductImage[];
   category: PopulatedRef | string;
   subCategory: PopulatedRef | string;

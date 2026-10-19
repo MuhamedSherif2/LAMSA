@@ -1,4 +1,4 @@
-import GetProducts from "@/features/products/_components/GetProducts";
+import GetProducts from "@/features/super-admin/products/_components/GetProducts";
 
 function Page(){
     return(

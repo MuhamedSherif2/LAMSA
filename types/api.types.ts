@@ -6,7 +6,6 @@ export interface ApiResponse<T = unknown> {
     data: T;
 }
 
-/** بعض الـ endpoints بترجّع count معاها (زي getAllUsers) */
 export interface ApiResponseWithCount<T> extends ApiResponse<T> {
     count?: number;
 }

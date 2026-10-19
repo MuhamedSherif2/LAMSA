@@ -13,7 +13,8 @@ import {
     Store,
 } from 'lucide-react';
 
-export const sideBarDashboardData = [
+// admin data
+export const dashboardSideBarData = [
     { id: 1, title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { id: 2, title: 'Orders', href: '/dashboard/orders', icon: ShoppingBag },
     { id: 3, title: 'Products', href: '/dashboard/products', icon: Package },
@@ -27,3 +28,11 @@ export const sideBarDashboardData = [
     { id: 11, title: 'Users', href: '/dashboard/users', icon: Users },
     { id: 12, title: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
+
+// user data
+// export const userNavData = [
+//     { id: 1, title: 'Lamsa', href: '/',},
+//     { id: 2, title: 'LOGIN', href: '/login',},
+//     { id: 2, title: 'FAVORITES', href: '/',},
+//     { id: 2, title: 'SHOPPING CART', href: '/',},
+// ]

@@ -1,10 +1,11 @@
+import GetAdminOrders from "@/features/super-admin/orders/_components/GetAdminOrders";
 
 
 function Page(){
     return(
-        <div>
-            <h1>Hello Orders</h1>
-        </div>
+        <>
+            <GetAdminOrders />
+        </>
     )
 }
 export default Page;

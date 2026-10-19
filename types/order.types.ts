@@ -12,8 +12,8 @@ export type OrderStatus =
 export interface ShippingAddress {
   fullName: string;
   phoneNumber: string;
-  country: string;         // "Egypt"
-  governorate: string;     // المحافظة
+  country: string;
+  governorate: string;
   city: string;
   area?: string;
   street: string;
@@ -27,7 +27,7 @@ export interface OrderProduct {
   _id: string;
   name: string;
   slug: string;
-  images: unknown[];       // ⚠️ محتاج Product schema
+  images: unknown[];
   price: number;
   discountPrice?: number;
 }

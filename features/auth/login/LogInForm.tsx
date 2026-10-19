@@ -19,35 +19,35 @@ function LogInForm() {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error("من فضلك املأ كل الحقول");
+      toast.error("please fill all input");
       return;
     }
 
     const data: Login = { email, password };
 
     setLoading(true);
-    
+
     try {
       const res = await authService.login(data);
       console.log("✅ Login:", res.data);
-    
+
       const token = res.data?.token;
       const user = res.data?.user;
-    
 
-        if(user && token) {
-           cookieHelper.set(TOKEN_KEY, token);
-           router.refresh()
-           toast.success("Login successful");
-        }
-      // if (user) localStorage.setItem("lamsa_user", JSON.stringify(user));
-    
-    
-      // const redirectTo = user?.role === "admin" ? "/dashboard" : "/";\
-      // setTimeout(() => router.push(redirectTo), 700);
+
+      if (user && token) {
+        cookieHelper.set(TOKEN_KEY, token);
+        localStorage.setItem("lamsa_user", JSON.stringify(user));
+      
+        window.dispatchEvent(new Event("lamsa-user-updated"));
+      
+        toast.success("Login successful");
+        router.replace("/");
+      }
+      
+      if (user) localStorage.setItem("lamsa_user", JSON.stringify(user));
     } catch (err: any) {
-      const message =
-        err?.response?.data?.message || "Invalid email or password";
+      const message = err?.response?.data?.message || "Invalid email or password";
       toast.error(message);
       console.error("❌ Login error:", err?.response?.data);
     } finally {
