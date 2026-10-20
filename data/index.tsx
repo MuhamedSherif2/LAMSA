@@ -26,7 +26,6 @@ export const dashboardSideBarData = [
     { id: 9, title: 'Contact', href: '/dashboard/contact', icon: Mail },
     { id: 10, title: 'Store Settings', href: '/dashboard/store-settings', icon: Store },
     { id: 11, title: 'Users', href: '/dashboard/users', icon: Users },
-    { id: 12, title: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 
 // user data

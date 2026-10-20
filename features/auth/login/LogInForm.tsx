@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -7,54 +8,57 @@ import { Button } from "@/components/ui/button";
 import { authService } from "@/services/auth.services";
 import type { Login } from "@/types/auth.types";
 import InputsFeild from "../register/Input";
-import { cookieHelper, TOKEN_KEY } from '@/lib/cookies';
+import { cookieHelper, TOKEN_KEY } from "@/lib/cookies";
 
 function LogInForm() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (!email || !password) {
-      toast.error("please fill all input");
+      toast.error("Please fill all inputs");
       return;
     }
-
-    const data: Login = { email, password };
-
+  
     setLoading(true);
-
+  
     try {
-      const res = await authService.login(data);
-      console.log("✅ Login:", res.data);
-
+      const res = await authService.login({ email, password });
+  
       const token = res.data?.token;
       const user = res.data?.user;
-
-
-      if (user && token) {
-        cookieHelper.set(TOKEN_KEY, token);
-        localStorage.setItem("lamsa_user", JSON.stringify(user));
-      
-        window.dispatchEvent(new Event("lamsa-user-updated"));
-      
-        toast.success("Login successful");
-        router.replace("/");
+  
+      if (!token || !user) {
+        toast.error("Invalid login response");
+        return;
       }
-      
-      if (user) localStorage.setItem("lamsa_user", JSON.stringify(user));
-    } catch (err: any) {
-      const message = err?.response?.data?.message || "Invalid email or password";
-      toast.error(message);
-      console.error("❌ Login error:", err?.response?.data);
+  
+      if (user.role !== "admin" && user.role !== "user") {
+        toast.error("Invalid user role");
+        return;
+      }
+  
+      cookieHelper.set("lamsa_token", token);
+      cookieHelper.set("lamsa_user_role", user.role);
+  
+      toast.success("Login successful");
+  
+      const redirectTo =
+        user.role === "admin" ? "/dashboard" : "/";
+  
+      window.location.replace(redirectTo);
+    } catch (error: unknown) {
+      console.error("Login error:", error);
+      toast.error("Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <InputsFeild

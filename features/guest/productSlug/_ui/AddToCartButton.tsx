@@ -54,43 +54,29 @@ function AddToCartButton({
             toast.success(
                 response.message || "Product added to cart successfully!"
             );
-        } catch (error: unknown) {
-            console.error("Add to cart error:", error);
-
-            const apiError = error as {
-                status?: number | string;
-                data?: {
-                    message?: string;
-                    error?: string;
-                };
-                error?: string;
-            };
-
+        } catch {
             toast.error(
-                apiError.data?.message ||
-                apiError.data?.error ||
-                apiError.error ||
-                "Failed to add product to cart"
+                "Failed to add product to cart. Please try again."
             );
         }
-};
+    };
 
-return (
-    <Button
-        type="button"
-        disabled={data.stock <= 0 || isLoading}
-        onClick={handleAddToCart}
-        className="h-12 flex-1 rounded-xl text-sm font-semibold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
-    >
-        {isLoading ? (
-            <LoaderCircle className="mr-2 size-4 animate-spin" />
-        ) : (
-            <ShoppingBag className="mr-2 size-4" />
-        )}
+    return (
+        <Button
+            type="button"
+            disabled={data.stock <= 0 || isLoading}
+            onClick={handleAddToCart}
+            className="h-12 flex-1 rounded-xl text-sm font-semibold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+        >
+            {isLoading ? (
+                <LoaderCircle className="mr-2 size-4 animate-spin" />
+            ) : (
+                <ShoppingBag className="mr-2 size-4" />
+            )}
 
-        {isLoading ? "Adding..." : "Add to Cart"}
-    </Button>
-);
+            {isLoading ? "Adding..." : "Add to Cart"}
+        </Button>
+    );
 }
 
 export default AddToCartButton;

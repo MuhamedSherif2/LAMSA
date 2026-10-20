@@ -26,17 +26,19 @@ export const OrderSlice = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Orders"],
     }),
-
+    
     // Get current user's orders
     getMyOrders: builder.query<ApiResponse<Order[]>, void>({
       query: () => "orders/my-orders",
       providesTags: ["Orders"],
     }),
-
+    
     // Get order by ID
     getOrderById: builder.query<ApiResponse<Order>, string>({
       query: (id) => `orders/${id}`,
+      providesTags: ["Orders"],
     }),
 
     // Cancel order

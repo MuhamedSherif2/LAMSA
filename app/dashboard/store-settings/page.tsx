@@ -1,12 +1,8 @@
-import GetStore from "@/features/super-admin/store/_components/GetStore";
+import GetStore from "@/features/super-admin/store/_components/GetStore"
 
-
-function Page(){
+function page(){
     return(
-        <div>
-            <h1>Hello store-settings</h1>
-            <GetStore />
-        </div>
+        <GetStore />
     )
 }
-export default Page;
+export default page

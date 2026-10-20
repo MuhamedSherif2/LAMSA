@@ -2,42 +2,79 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export default function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  const { pathname } = request.nextUrl;
 
   const token = request.cookies.get("lamsa_token")?.value;
-  const userRole = request.cookies.get("lamsa_user_role")?.value
+  const userRole = request.cookies.get("lamsa_user_role")?.value;
+
   const isAuthenticated = Boolean(token);
 
-  const isAuthRoute = /dashboard/i.test(pathname);
-  const isGuestRoute = /login|register/i.test(pathname);
+  const isAdminRoute =
+    pathname === "/dashboard" ||
+    pathname.startsWith("/dashboard/");
 
-  // --- Unauthenticated user on protected page ---
-  if (!isAuthenticated && isAuthRoute) {
-    const url = new URL("/login", request.url);
-    const res = NextResponse.redirect(url);
-    return res;
+  const isUserRoute =
+    pathname === "/" ||
+    pathname.startsWith("/");
+
+  const isGuestRoute =
+    pathname === "/login" ||
+    pathname === "/register";
+
+  // Guests cannot access protected pages
+  if (!isAuthenticated && (isAdminRoute || isUserRoute)) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // --- Authenticated user on login/register ---
+  // Admin dashboard
+  if (isAdminRoute) {
+    if (userRole === "admin" && isAuthenticated) {
+      return NextResponse.next();
+    }
+
+    if (userRole === "user" && isAuthenticated) {
+      return NextResponse.redirect(new URL("/user", request.url));
+    }
+
+    const response = NextResponse.redirect(
+      new URL("/login", request.url),
+    );
+
+    response.cookies.delete("lamsa_token");
+    response.cookies.delete("lamsa_user_role");
+
+    return response;
+  }
+
+  // User area
+  if (isUserRoute) {
+    if (userRole === "user" && isAuthenticated) {
+      return NextResponse.next();
+    }
+
+    if (userRole === "admin" && isAuthenticated) {
+      return NextResponse.redirect(
+        new URL("/dashboard", request.url),
+      );
+    }
+
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // Login and register pages
   if (isAuthenticated && isGuestRoute) {
-    if (userRole == "user") {
-      const url = new URL("/user", request.url);
-      const res = NextResponse.redirect(url);
-      return res;
-    } else if (userRole == "admin") {
-      const url = new URL("/dashboard", request.url);
-      const res = NextResponse.redirect(url);
-      return res;
-    } else {
-      const url = new URL("/", request.url);
-      request.cookies.delete("lamsa_token")
-      const res = NextResponse.redirect(url);
-      return res;
+    if (userRole === "admin") {
+      return NextResponse.redirect(
+        new URL("/dashboard", request.url),
+      );
+    }
+
+    if (userRole === "user") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
-  // Always return a response containing cookies
-  const res = NextResponse.next();
-  return res
+
+  return NextResponse.next();
 }
 
 export const config = {
