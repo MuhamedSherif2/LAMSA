@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -13,59 +14,32 @@ export default function proxy(request: NextRequest) {
     pathname === "/dashboard" ||
     pathname.startsWith("/dashboard/");
 
-  const isUserRoute =
-    pathname === "/" ||
-    pathname.startsWith("/");
-
   const isGuestRoute =
     pathname === "/login" ||
     pathname === "/register";
 
-  // Guests cannot access protected pages
-  if (!isAuthenticated && (isAdminRoute || isUserRoute)) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Admin dashboard
+  // Protect the admin dashboard.
   if (isAdminRoute) {
-    if (userRole === "admin" && isAuthenticated) {
+    if (isAuthenticated && userRole === "admin") {
       return NextResponse.next();
     }
 
-    if (userRole === "user" && isAuthenticated) {
-      return NextResponse.redirect(new URL("/user", request.url));
-    }
-
     const response = NextResponse.redirect(
-      new URL("/login", request.url),
+      new URL("/login", request.url)
     );
 
+    // Clear invalid or unauthorized dashboard session cookies.
     response.cookies.delete("lamsa_token");
     response.cookies.delete("lamsa_user_role");
 
     return response;
   }
 
-  // User area
-  if (isUserRoute) {
-    if (userRole === "user" && isAuthenticated) {
-      return NextResponse.next();
-    }
-
-    if (userRole === "admin" && isAuthenticated) {
-      return NextResponse.redirect(
-        new URL("/dashboard", request.url),
-      );
-    }
-
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Login and register pages
+  // Redirect authenticated users away from login/register.
   if (isAuthenticated && isGuestRoute) {
     if (userRole === "admin") {
       return NextResponse.redirect(
-        new URL("/dashboard", request.url),
+        new URL("/dashboard", request.url)
       );
     }
 
@@ -74,6 +48,7 @@ export default function proxy(request: NextRequest) {
     }
   }
 
+  // All other routes remain accessible.
   return NextResponse.next();
 }
 
