@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Heart, ShoppingCart, User } from "lucide-react";
+import { Heart, Moon, ShoppingCart, Sun, User } from "lucide-react";
 
 import { useGetCartQuery } from "@/store/slices/cartSlice";
 import { useGetWishlistQuery } from "@/store/slices/wishlistSlice";
+import { Button } from "@/components/ui/button";
+import useTheme from "@/hooks/useTheme";
 
 interface StoredUser {
   id: string;
@@ -79,6 +81,7 @@ function Nav() {
       window.removeEventListener("lamsa-user-updated", syncUser);
     };
   }, []);
+  const { theme, toggleTheme, mounted } = useTheme();
 
   const cart = cartResponse?.data;
   const wishlist = wishlistResponse?.data;
@@ -105,6 +108,23 @@ function Nav() {
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={
+              theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            }
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+            onClick={toggleTheme}
+            disabled={!mounted}
+            className="size-9 rounded-full text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </Button>
           <Link
             href="/wishlist"
             aria-label={`Wishlist, ${wishlistCount} items`}

@@ -15,9 +15,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useTheme from '@/hooks/useTheme';
 
 export default function DashboardNavbar() {
   const pathname = usePathname();
+  const { theme, toggleTheme, mounted } = useTheme();
 
   const segments = pathname.split('/').filter(Boolean);
   const pageTitle =
@@ -42,11 +44,19 @@ export default function DashboardNavbar() {
         <Button
           variant="ghost"
           size="icon"
-          aria-label="Toggle theme"
+          aria-label={
+            theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+          }
+          title={theme === "dark" ? "Light mode" : "Dark mode"}
+          onClick={toggleTheme}
+          disabled={!mounted}
           className="size-9 rounded-full text-muted-foreground transition-colors hover:text-foreground"
         >
-          <Sun className="size-5 dark:hidden" />
-          <Moon className="hidden size-5 dark:block" />
+          {theme === "dark" ? (
+            <Sun className="size-5" />
+          ) : (
+            <Moon className="size-5" />
+          )}
         </Button>
 
         <Button
@@ -85,7 +95,7 @@ export default function DashboardNavbar() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              render={<Link href="/dashboard/profile" />}
+              render={<Link href="/account" />}
               className="cursor-pointer gap-2 rounded-lg py-2"
             >
               <User className="size-4" />
